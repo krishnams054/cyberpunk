@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLOCKIT 2026 // Code Against The Clock — A 24-Hour Innovation &amp; Technology Hackathon</title>
+  <meta name="description" content="CLOCKIT 2026: Code Against The Clock. A 24-Hour Innovation &amp; Technology Hackathon presented by SalutixAI × Jain Institute of Technology (JIT), Davanagere. ₹22,000 Total Prize Pool. 25 – 26 November 2026.">
+  <meta name="keywords" content="CLOCKIT 2026, Code Against The Clock, SalutixAI, JIT Davanagere, Jain Institute of Technology, Innovation Hackathon, 24-Hour Hackathon, ₹22,000 Prize Pool">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FF2B75'><path d='M18 4l-4 8 4 8h-3l-2.5-5.5L10 20H7l4-8-4-8h3l2.5 5.5L15 4z'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@500;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body class="cyber-body">
+
+  <!-- Audio Synth Controller Overlay -->
+  <div id="audio-status" class="audio-hud" title="Toggle Atmospheric Cyber Audio">
+    <button id="audio-toggle-btn" class="audio-btn" aria-label="Toggle Audio">
+      <span class="eq-bars">
+        <span class="eq-bar bar-1"></span>
+        <span class="eq-bar bar-2"></span>
+        <span class="eq-bar bar-3"></span>
+        <span class="eq-bar bar-4"></span>
+      </span>
+      <span class="audio-label">AUDIO: <span id="audio-state-text">MUTED</span></span>
+    </button>
+  </div>
+
+  <!-- Ambient Perspective Three.js Background Canvas -->
+  <canvas id="bg-canvas" class="bg-webgl-canvas"></canvas>
+
+  <!-- Cyber Scanline and Vignette Effects -->
+  <div class="cyber-scanlines"></div>
+  <div class="cyber-vignette"></div>
+  <div id="ambient-spotlight" class="cyber-ambient-spotlight"></div>
+
+  <!-- Custom Cyber Cursor -->
+  <div id="cyber-cursor" class="cyber-cursor">
+    <div class="cursor-dot"></div>
+    <div class="cursor-crosshair"></div>
+  </div>
+
+  <!-- FIXED LEFT RAIL (Direct Reference Match) -->
+  <aside class="hud-left-rail" aria-label="Quick Links & Progress">
+    <div class="rail-top-badge">
+      <div class="tech-icon-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+      </div>
+      <span class="rail-code">0x7F</span>
+    </div>
+
+    <div class="rail-vertical-text">
+      <span>FOLLOW US</span>
+    </div>
+
+    <div class="rail-social-stack">
+      <a href="https://twitter.com" target="_blank" rel="noopener" class="social-icon" aria-label="X / Twitter" data-sound="hover">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+      </a>
+      <a href="https://discord.com" target="_blank" rel="noopener" class="social-icon" aria-label="Discord" data-sound="hover">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+        </svg>
+      </a>
+      <a href="https://instagram.com" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram" data-sound="hover">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+        </svg>
+      </a>
+      <a href="https://youtube.com" target="_blank" rel="noopener" class="social-icon" aria-label="YouTube" data-sound="hover">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="rail-bottom-tracker">
+      <span class="scroll-label">SCROLL DOWN</span>
+      <div class="scroll-track-line">
+        <div class="scroll-thumb-glow" id="scroll-thumb"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- FIXED RIGHT RAIL (Direct Reference Match) -->
+  <aside class="hud-right-rail" aria-label="Status & Section Indicator">
+    <div class="rail-right-header">
+      <span class="rail-tag">SYS_LINK // ACTIVE</span>
+      <div class="telemetry-bar-mini">
+        <span class="dot-live"></span>
+        <span class="ping-text">99.8% STABLE</span>
+      </div>
+    </div>
+
+    <div class="rail-right-center">
+      <p class="rail-caption">CODE AGAINST THE CLOCK</p>
+      <div class="rail-page-indicator">
+        <span class="page-current" id="active-step-num">01</span>
+        <span class="page-divider">/</span>
+        <span class="page-total">05</span>
+      </div>
+      <!-- Mini Telemetry Bars -->
+      <div class="rail-meter-bars">
+        <div class="mini-bar active" data-step="1"></div>
+        <div class="mini-bar" data-step="2"></div>
+        <div class="mini-bar" data-step="3"></div>
+        <div class="mini-bar" data-step="4"></div>
+        <div class="mini-bar" data-step="5"></div>
+      </div>
+    </div>
+
+    <div class="rail-right-footer">
+      <span class="coord-text">LAT: 14.4644° N</span>
+      <span class="coord-text">LON: 75.9218° E</span>
+    </div>
+  </aside>
+
+  <!-- TOP NAVIGATION BAR (Direct Reference Match) -->
+  <header class="hud-header" id="navbar">
+    <div class="nav-container">
+      
+      <!-- Top Left Brand & Cyber Grid Icon -->
+      <div class="nav-brand-group">
+        <button class="nav-matrix-btn" id="matrix-btn" title="System Matrix" aria-label="System Menu">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+        </button>
+
+        <a href="#hero" class="brand-logo" data-sound="click">
+          <!-- Cyber X Neon Logo Icon -->
+          <div class="brand-symbol">
+            <svg viewBox="0 0 40 40" width="30" height="30">
+              <path d="M8 8 L32 32 M32 8 L8 32" stroke="#FF2B75" stroke-width="4.5" stroke-linecap="round"/>
+              <circle cx="20" cy="20" r="3" fill="#FFFFFF"/>
+              <path d="M12 4 L28 4 M12 36 L28 36" stroke="rgba(255, 43, 117, 0.4)" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="brand-text-wrap">
+            <span class="brand-title">CLOCKIT</span>
+            <span class="brand-sub">2026 // SALUTIXAI × JIT</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Center Nav Links -->
+      <nav class="nav-links" aria-label="Main Navigation">
+        <a href="#hero" class="nav-link active" data-sound="hover"><span class="nav-dot"></span>HOME</a>
+        <a href="#rules" class="nav-link" data-sound="hover"><span class="nav-dot"></span>RULES</a>
+        <a href="#tracks" class="nav-link" data-sound="hover"><span class="nav-dot"></span>TRACKS</a>
+        <a href="#schedule" class="nav-link" data-sound="hover"><span class="nav-dot"></span>JOURNEY</a>
+        <a href="#prizes" class="nav-link" data-sound="hover"><span class="nav-dot"></span>PRIZES</a>
+        <a href="#venue" class="nav-link" data-sound="hover"><span class="nav-dot"></span>VENUE</a>
+      </nav>
+
+      <!-- Right Actions: Search trigger, Audio, and Neon Pill Button -->
+      <div class="nav-actions">
+        <!-- Quick Command Palette / Search Trigger -->
+        <button class="nav-search-btn" id="search-trigger" title="Quick Search (Ctrl + K)" aria-label="Search" data-sound="click">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <span class="search-hint">⌘K</span>
+        </button>
+
+        <!-- Neon Pill CTA Button (Direct Reference Match) -->
+        <button class="neon-pill-btn" id="register-nav-btn" data-sound="click">
+          <span class="btn-text">REGISTER (₹650)</span>
+          <span class="btn-arrow">→</span>
+          <div class="btn-glow-layer"></div>
+        </button>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Mobile Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Mobile Dropdown Menu -->
+  <div class="mobile-nav-drawer" id="mobile-drawer">
+    <div class="drawer-header">
+      <span class="drawer-title">SYSTEM NAVIGATION</span>
+      <button class="drawer-close" id="drawer-close">&times;</button>
+    </div>
+    <div class="drawer-links">
+      <a href="#hero" class="drawer-link">HOME</a>
+      <a href="#rules" class="drawer-link">RULES &amp; ELIGIBILITY</a>
+      <a href="#tracks" class="drawer-link">INNOVATION TRACKS</a>
+      <a href="#schedule" class="drawer-link">THE HACKATHON JOURNEY</a>
+      <a href="#prizes" class="drawer-link">PRIZES (₹22,000)</a>
+      <a href="#venue" class="drawer-link">VENUE (JIT DAVANAGERE)</a>
+    </div>
+    <div class="drawer-footer">
+      <button class="neon-pill-btn w-full" id="drawer-register-btn">REGISTER (₹650/TEAM) →</button>
+    </div>
+  </div>
+
+  <!-- MAIN SCROLL CONTAINER -->
+  <main class="main-viewport-flow">
+
+    <!-- ==========================================
+         SECTION 1: HERO VIEWPORT (DIRECT REFERENCE MATCH)
+         ========================================== -->
+    <section class="hero-viewport" id="hero">
+      
+      <!-- Top Taglines & Dimension Readout -->
+      <div class="hero-top-meta">
+        <div class="dimension-tag">
+          <span class="bracket">[</span>
+          <span class="dim-text">24 HOURS. ONE CHALLENGE. BUILD SOMETHING THAT MATTERS.</span>
+          <span class="bracket">]</span>
+        </div>
+        <div class="terminal-time" id="terminal-time">UTC+05:30 // 09:00:00</div>
+      </div>
+
+      <!-- Layer 1: Ambient Magenta Radial Bloom Backlight -->
+      <div class="hero-backlight-bloom" id="hero-bloom"></div>
+
+      <!-- Layer 2: Massive Distressed Bold Background Typography ("CLOCKIT") -->
+      <div class="hero-giant-typography-wrap" id="giant-typography">
+        <h1 class="giant-display-header" data-text="CLOCKIT">
+          <span class="char-span">C</span>
+          <span class="char-span">L</span>
+          <span class="char-span">O</span>
+          <span class="char-span">C</span>
+          <span class="char-span">K</span>
+          <span class="char-span">I</span>
+          <span class="char-span">T</span>
+        </h1>
+        <div class="header-sub-cipher">
+          <span>// CODE AGAINST THE CLOCK // 25 – 26 NOVEMBER 2026 //</span>
+        </div>
+      </div>
+
+      <!-- Layer 3: Central 3D Cyberpunk Mecha-Anime Female Hero (Overlapping Text) -->
+      <div class="hero-character-stage" id="character-stage">
+        <!-- Interactive 3D Parallax Container -->
+        <div class="character-parallax-wrapper" id="hero-character-wrap">
+          <!-- Multi-plane Character Layer with Visor Pulse -->
+          <div class="character-glow-halo"></div>
+          <img 
+            src="./assets/hero_character.png" 
+            alt="Cyberpunk Mecha Anime Hero" 
+            class="hero-character-img"
+            id="hero-char-img"
+            loading="eager"
+          />
+          <!-- Holographic Visor Overlay Pulse -->
+          <div class="visor-reflection-sheen"></div>
+        </div>
+      </div>
+
+      <!-- Layer 4: Mid Section Split Info Blocks (Direct Reference Match) -->
+      <div class="hero-mid-info-container">
+        
+        <!-- Left Block (SalutixAI x JIT) -->
+        <div class="hero-info-card left-card" id="hero-left-card">
+          <div class="card-tech-header">
+            <span class="tech-dot"></span>
+            <span class="card-micro-label">NODE 01 // ORGANIZERS</span>
+          </div>
+          <h2 class="hero-info-title">SALUTIXAI × JIT</h2>
+          <p class="hero-info-desc">
+            Ideas for a healthier tomorrow meets engineering excellence at Jain Institute of Technology, Davanagere. 
+            24 hours to innovate, collaborate, build, and create impact.
+          </p>
+          <div class="card-action-row">
+            <a href="#schedule" class="tech-cutout-btn" data-sound="hover">
+              <span class="btn-cut-border"></span>
+              <span class="btn-cut-label">THE JOURNEY</span>
+              <span class="btn-hashes">///</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Block (Clockit 2026) -->
+        <div class="hero-info-card right-card" id="hero-right-card">
+          <div class="card-tech-header">
+            <span class="tech-dot"></span>
+            <span class="card-micro-label">NODE 02 // SPRINT</span>
+          </div>
+          <h2 class="hero-info-title">CLOCKIT 2026</h2>
+          <p class="hero-info-desc">
+            A 24-Hour Innovation &amp; Technology Hackathon. Code against the clock to build something that matters. 
+            ₹22,000 total prize pool with expert mentorship. ₹650 registration fee per team.
+          </p>
+          <div class="card-action-row">
+            <button class="tech-cutout-btn play-btn" id="watch-trailer-btn" data-sound="click">
+              <span class="btn-cut-border"></span>
+              <span class="play-icon">▶</span>
+              <span class="btn-cut-label">EVENT TEASER</span>
+              <span class="btn-hashes">///</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Layer 5: Bottom Floating Telemetry Dock (Direct Reference Match) -->
+      <div class="hero-bottom-dock" id="bottom-dock">
+        <div class="dock-acrylic-panel">
+
+          <!-- Card 1: 3D Holographic Rotating Wireframe Sphere + Cash Prize (+₹22,000) -->
+          <div class="dock-card dock-card-1" id="stat-card-prize" data-sound="hover">
+            <div class="sphere-canvas-wrap">
+              <canvas id="wireframe-sphere-canvas" width="80" height="80"></canvas>
+            </div>
+            <div class="stat-content">
+              <div class="stat-meta-label">
+                <span>TOTAL PRIZE POOL</span>
+                <span class="stat-pill-tag">BOUNTY</span>
+              </div>
+              <div class="stat-primary-metric">
+                <span class="metric-symbol">+₹</span>
+                <span class="metric-number" id="counter-prize">22,000</span>
+              </div>
+              <p class="stat-subtext">₹10K First • ₹7K Second • ₹5K Third Prize</p>
+            </div>
+          </div>
+
+          <div class="dock-divider"></div>
+
+          <!-- Card 2: Date, Sprint Duration & Timings -->
+          <div class="dock-card dock-card-2" id="stat-card-date" data-sound="hover">
+            <div class="stat-icon-wrap calendar-cyber-icon">
+              <div class="cyber-chip-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#FF2B75" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="3" ry="3"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                  <circle cx="8" cy="15" r="1.5" fill="#FF2B75"></circle>
+                  <circle cx="12" cy="15" r="1.5" fill="#FF2B75"></circle>
+                  <circle cx="16" cy="15" r="1.5" fill="#FF2B75"></circle>
+                </svg>
+                <div class="chip-glow-dot"></div>
+              </div>
+            </div>
+            <div class="stat-content">
+              <div class="stat-meta-label">
+                <span>EVENT SPRINT</span>
+                <span class="stat-pill-tag tag-green">LIVE</span>
+              </div>
+              <div class="stat-primary-metric">
+                <span class="metric-number">NOV 25–26</span>
+                <span class="metric-sub-badge">24-HR</span>
+              </div>
+              <p class="stat-subtext">25 – 26 November 2026 // JIT Davanagere</p>
+            </div>
+          </div>
+
+          <div class="dock-divider"></div>
+
+          <!-- Card 3: Overlapping Avatar Stack + Registration Fee & Capacity -->
+          <div class="dock-card dock-card-3" id="stat-card-venue" data-sound="hover">
+            <!-- Overlapping Avatar Stack -->
+            <div class="avatar-stack-wrap">
+              <div class="avatar-circle av-1">
+                <img src="./assets/avatar1.jpg" alt="Hacker Avatar Nyx">
+              </div>
+              <div class="avatar-circle av-2">
+                <img src="./assets/avatar2.jpg" alt="Hacker Avatar Cipher">
+              </div>
+              <div class="avatar-circle av-3">
+                <img src="./assets/avatar3.jpg" alt="Hacker Avatar Echo">
+              </div>
+            </div>
+
+            <div class="stat-content">
+              <div class="stat-meta-label">
+                <span>REGISTRATION FEE</span>
+                <span class="stat-pill-tag">40–50 TEAMS</span>
+              </div>
+              <div class="stat-primary-metric location-text">
+                <span class="metric-bold">₹650 PER TEAM</span>
+              </div>
+              <p class="stat-subtext">Teams up to 4 • Engineering &amp; Tech Students</p>
+            </div>
+
+            <!-- Circular Neon Radar Arrow Button (Direct Reference Match) -->
+            <button class="radar-arrow-btn" id="venue-radar-btn" title="View Venue & Directions" aria-label="Open Venue Info" data-sound="click">
+              <div class="radar-ping-ring"></div>
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#FFFFFF" stroke-width="2.5">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==========================================
+         SECTION 2: HACKATHON RULES & GUIDELINES (HUD INTERFACE)
+         ========================================== -->
+    <section class="cyber-section rules-section" id="rules">
+      <div class="section-container">
+        
+        <!-- Section Header -->
+        <div class="section-header-block">
+          <div class="header-pre-badge">
+            <span class="bracket">[</span>
+            <span class="badge-text">PARTICIPATION MATRIX // EVENT GUIDELINES</span>
+            <span class="bracket">]</span>
+          </div>
+          <h2 class="section-title">WHO CAN PARTICIPATE &amp; RULES</h2>
+          <p class="section-subtitle">
+            Open to engineering and technology students. Teams of up to 4 members. Approximately 40–50 teams.
+          </p>
+          <div class="header-circuit-line"></div>
+        </div>
+
+        <!-- Sci-Fi Modular Server Grid Cards -->
+        <div class="rules-grid">
+          
+          <!-- Card 1: Who Can Participate? -->
+          <div class="server-block-card" data-sound="hover">
+            <div class="server-corner-tech tl"></div>
+            <div class="server-corner-tech tr"></div>
+            <div class="server-corner-tech bl"></div>
+            <div class="server-corner-tech br"></div>
+            <div class="card-inner-glow"></div>
+
+            <div class="card-top-hud">
+              <span class="node-id">DIR_01 // PARTICIPANTS</span>
+              <span class="node-status-led">ELIGIBLE</span>
+            </div>
+
+            <div class="rule-icon-circle">
+              <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#FF2B75" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+
+            <h3 class="rule-title">WHO CAN PARTICIPATE?</h3>
+            <p class="rule-summary">
+              Open to <strong>engineering and technology students</strong> forming squads of <strong>up to 4 members</strong>. Approximately 40–50 teams total.
+            </p>
+
+            <ul class="rule-checklist">
+              <li><span class="check-icon">✔</span> Engineering and technology students</li>
+              <li><span class="check-icon">✔</span> Teams of up to 4 members</li>
+              <li><span class="check-icon">✔</span> Approximately 40–50 teams capacity</li>
+              <li><span class="check-icon">✔</span> Open to students from other eligible institutions, subject to event guidelines</li>
+            </ul>
+
+            <div class="card-bottom-telemetry">
+              <span>CAPACITY: 40–50 TEAMS</span>
+              <span>VERIFICATION: ON-SITE</span>
+            </div>
+          </div>
+
+          <!-- Card 2: Registration Fee -->
+          <div class="server-block-card highlight-card" data-sound="hover">
+            <div class="server-corner-tech tl"></div>
+            <div class="server-corner-tech tr"></div>
+            <div class="server-corner-tech bl"></div>
+            <div class="server-corner-tech br"></div>
+            <div class="card-inner-glow"></div>
+
+            <div class="card-top-hud">
+              <span class="node-id">DIR_02 // REGISTRATION</span>
+              <span class="node-status-led led-hot">₹650</span>
+            </div>
+
+            <div class="rule-icon-circle">
+              <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#FF0055" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6v12M8 10h8M8 14h6"></path>
+              </svg>
+            </div>
+
+            <h3 class="rule-title">REGISTRATION FEE</h3>
+            <p class="rule-summary">
+              Fixed registration fee of <strong>₹650 per team</strong>. Includes comprehensive 24-hour hackathon access, meals, high-speed labs, and mentorship.
+            </p>
+
+            <ul class="rule-checklist">
+              <li><span class="check-icon">✔</span> ₹650 per team flat fee</li>
+              <li><span class="check-icon">✔</span> Covers entire squad (up to 4 members)</li>
+              <li><span class="check-icon">✔</span> Full access to 24-hour building facilities &amp; Wi-Fi</li>
+              <li><span class="check-icon">✔</span> Meals, beverages &amp; official participant kits included</li>
+            </ul>
+
+            <div class="card-bottom-telemetry">
+              <span>PRICING: ₹650 PER TEAM</span>
+              <span>SLOTS: LIMITED (40–50)</span>
+            </div>
+          </div>
+
+          <!-- Card 3: Key Offerings & Pillars -->
+          <div class="server-block-card" data-sound="hover">
+            <div class="server-corner-tech tl"></div>
+            <div class="server-corner-tech tr"></div>
+            <div class="server-corner-tech bl"></div>
+            <div class="server-corner-tech br"></div>
+            <div class="card-inner-glow"></div>
+
+            <div class="card-top-hud">
+              <span class="node-id">DIR_03 // PILLARS</span>
+              <span class="node-status-led">ACTIVE</span>
+            </div>
+
+            <div class="rule-icon-circle">
+              <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#FF2B75" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </div>
+
+            <h3 class="rule-title">KEY HIGHLIGHTS</h3>
+            <p class="rule-summary">
+              Four core pillars powering your 24-hour engineering journey at Jain Institute of Technology, Davanagere.
+            </p>
+
+            <ul class="rule-checklist">
+              <li><span class="check-icon">✔</span> <strong>Expert Mentorship:</strong> 1-on-1 industry architectural review</li>
+              <li><span class="check-icon">✔</span> <strong>24-Hour Building Experience:</strong> Pure non-stop engineering sprint</li>
+              <li><span class="check-icon">✔</span> <strong>Networking &amp; Collaboration:</strong> Interact with top collegiate innovators</li>
+              <li><span class="check-icon">✔</span> <strong>Certificates &amp; Recognition:</strong> Official verified credentials</li>
+            </ul>
+
+            <div class="card-bottom-telemetry">
+              <span>EXPERIENCE: 24-HOUR SPRINT</span>
+              <span>NETWORK: INTER-COLLEGE</span>
+            </div>
+          </div>
+
+          <!-- Card 4: Code Against The Clock -->
+          <div class="server-block-card" data-sound="hover">
+            <div class="server-corner-tech tl"></div>
+            <div class="server-corner-tech tr"></div>
+            <div class="server-corner-tech bl"></div>
+            <div class="server-corner-tech br"></div>
+            <div class="card-inner-glow"></div>
+
+            <div class="card-top-hud">
+              <span class="node-id">DIR_04 // METHODOLOGY</span>
+              <span class="node-status-led">ACTIVE</span>
+            </div>
+
+            <div class="rule-icon-circle">
+              <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#FF2B75" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+
+            <h3 class="rule-title">CODE AGAINST THE CLOCK</h3>
+            <p class="rule-summary">
+              Turn real-world problems into working prototypes through creativity, collaboration, and technology.
+            </p>
+
+            <ul class="rule-checklist">
+              <li><span class="check-icon">✔</span> <strong>Plan • Build • Test • Present:</strong> Complete lifecycle delivery</li>
+              <li><span class="check-icon">✔</span> 100% original code developed during the sprint window</li>
+              <li><span class="check-icon">✔</span> Physical reporting with college ID cards at JIT Davanagere</li>
+              <li><span class="check-icon">✔</span> High-speed Wi-Fi &amp; uninterrupted backup power provided</li>
+            </ul>
+
+            <div class="card-bottom-telemetry">
+              <span>VENUE: JIT DAVANAGERE</span>
+              <span>DATES: NOV 25–26, 2026</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Interactive Rule Eligibility Checker Banner -->
+        <div class="rules-banner-action">
+          <div class="banner-left">
+            <span class="cyber-badge-glow">LIMITED TIME. UNLIMITED POSSIBILITIES.</span>
+            <h4>YOUR IDEA. YOUR TEAM. YOUR 24 HOURS.</h4>
+            <p>Are you ready to build something that matters? Join 40–50 elite squads at JIT Davanagere.</p>
+          </div>
+          <div class="banner-right">
+            <button class="tech-cutout-btn" id="open-rules-checklist-btn" data-sound="click">
+              <span class="btn-cut-border"></span>
+              <span class="btn-cut-label">REGISTER (₹650)</span>
+              <span class="btn-hashes">///</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 3: SCHEDULE, TIMINGS & VENUE DETAILS
+         ========================================== -->
+    <section class="cyber-section schedule-section" id="schedule">
+      <div class="section-container">
+        
+        <!-- Section Header -->
+        <div class="section-header-block">
+          <div class="header-pre-badge">
+            <span class="bracket">[</span>
+            <span class="badge-text">THE HACKATHON JOURNEY // 24-HOUR SPRINT</span>
+            <span class="bracket">]</span>
+          </div>
+          <h2 class="section-title">THE HACKATHON JOURNEY</h2>
+          <p class="section-subtitle">
+            Turn real-world problems into working prototypes through creativity, collaboration, and technology.
+          </p>
+          <div class="header-circuit-line"></div>
+        </div>
+
+        <div class="split-schedule-venue-layout">
+          
+          <!-- LEFT COLUMN: TIMELINE HUD WITH CIRCUIT TRACE -->
+          <div class="timeline-hud-col">
+            <div class="timeline-title-row">
+              <span class="timeline-hud-title">CHRONOLOGY // 25 – 26 NOVEMBER 2026</span>
+              <span class="timeline-status-tag">24-HOUR SPRINT</span>
+            </div>
+
+            <div class="cyber-timeline-spine">
+              <!-- Animated Glowing Neon Circuit Spine Track -->
+              <div class="spine-line">
+                <div class="spine-glow-runner" id="spine-runner"></div>
+              </div>
+
+              <!-- Step 01: UNDERSTAND -->
+              <div class="timeline-node" data-node="1" data-sound="hover">
+                <div class="node-marker">
+                  <span class="marker-core"></span>
+                  <span class="marker-ring"></span>
+                </div>
+                <div class="node-card">
+                  <div class="node-meta">
+                    <span class="step-badge">STAGE 01</span>
+                    <span class="node-time">09:00 AM // NOV 25</span>
+                  </div>
+                  <h4 class="node-heading">UNDERSTAND — DIVE INTO THE PROBLEM</h4>
+                  <p class="node-detail">
+                    Physical check-in at JIT Library, Davanagere, problem statement release, expert briefings, and domain immersion.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Step 02: IDEATE -->
+              <div class="timeline-node" data-node="2" data-sound="hover">
+                <div class="node-marker">
+                  <span class="marker-core"></span>
+                  <span class="marker-ring"></span>
+                </div>
+                <div class="node-card">
+                  <div class="node-meta">
+                    <span class="step-badge">STAGE 02</span>
+                    <span class="node-time">11:30 AM // NOV 25</span>
+                  </div>
+                  <h4 class="node-heading">IDEATE — GENERATE SOLUTIONS</h4>
+                  <p class="node-detail">
+                    Brainstorming architecture, evaluating real-world feasibility, and formulating innovative technical solutions.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Step 03: DESIGN -->
+              <div class="timeline-node" data-node="3" data-sound="hover">
+                <div class="node-marker">
+                  <span class="marker-core"></span>
+                  <span class="marker-ring"></span>
+                </div>
+                <div class="node-card">
+                  <div class="node-meta">
+                    <span class="step-badge">STAGE 03</span>
+                    <span class="node-time">02:00 PM // NOV 25</span>
+                  </div>
+                  <h4 class="node-heading">DESIGN — PLAN YOUR APPROACH</h4>
+                  <p class="node-detail">
+                    Technical wireframes, schema design, API planning, and defining milestone deliverables.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Step 04: BUILD -->
+              <div class="timeline-node active-step" data-node="4" data-sound="hover">
+                <div class="node-marker">
+                  <span class="marker-core"></span>
+                  <span class="marker-ring"></span>
+                </div>
+                <div class="node-card">
+                  <div class="node-meta">
+                    <span class="step-badge badge-active">STAGE 04</span>
+                    <span class="node-time">05:00 PM // OVERNIGHT SPRINT</span>
+                  </div>
+                  <h4 class="node-heading">BUILD — TURN IDEAS INTO REALITY</h4>
+                  <p class="node-detail">
+                    High-velocity engineering sprint powered by 1-on-1 Expert Mentorship, midnight snacks, and tech support.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Step 05: TEST -->
+              <div class="timeline-node" data-node="5" data-sound="hover">
+                <div class="node-marker">
+                  <span class="marker-core"></span>
+                  <span class="marker-ring"></span>
+                </div>
+                <div class="node-card">
+                  <div class="node-meta">
+                    <span class="step-badge">STAGE 05</span>
+                    <span class="node-time">07:00 AM // NOV 26</span>
+                  </div>
+                  <h4 class="node-heading">TEST — ITERATE &amp; IMPROVE</h4>
+                  <p class="node-detail">
+                    Rigorous debugging, code refinement, edge-case testing, and live prototype optimization.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Step 06: PRESENT -->
+              <div class="timeline-node" data-node="6" data-sound="hover">
+                <div class="node-marker">
+                  <span class="marker-core"></span>
+                  <span class="marker-ring"></span>
+                </div>
+                <div class="node-card">
+                  <div class="node-meta">
+                    <span class="step-badge">STAGE 06</span>
+                    <span class="node-time">10:30 AM // NOV 26</span>
+                  </div>
+                  <h4 class="node-heading">PRESENT — SHOWCASE YOUR SOLUTION</h4>
+                  <p class="node-detail">
+                    Live demo evaluations in front of the grand jury, winner announcements, and ₹22,000 prize distribution.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN: VENUE TERMINAL & COUNTDOWN RADAR -->
+          <div class="venue-terminal-col" id="venue">
+            
+            <!-- Terminal Header Frame -->
+            <div class="terminal-panel" data-sound="hover">
+              <div class="terminal-top-bar">
+                <div class="term-traffic-lights">
+                  <span class="light red"></span>
+                  <span class="light yellow"></span>
+                  <span class="light green"></span>
+                </div>
+                <span class="term-title">JIT_DAVANAGERE_VENUE_TERMINAL.EXE</span>
+                <span class="term-ping">PING 14ms</span>
+              </div>
+
+              <!-- Live Countdown HUD -->
+              <div class="countdown-display-card">
+                <span class="countdown-eyebrow">COUNTDOWN TO 25 NOVEMBER 2026</span>
+                <div class="countdown-digits-grid">
+                  <div class="time-block">
+                    <span class="digit" id="timer-days">31</span>
+                    <span class="unit">DAYS</span>
+                  </div>
+                  <span class="colon">:</span>
+                  <div class="time-block">
+                    <span class="digit" id="timer-hours">09</span>
+                    <span class="unit">HOURS</span>
+                  </div>
+                  <span class="colon">:</span>
+                  <div class="time-block">
+                    <span class="digit" id="timer-mins">25</span>
+                    <span class="unit">MINS</span>
+                  </div>
+                  <span class="colon">:</span>
+                  <div class="time-block">
+                    <span class="digit" id="timer-secs">00</span>
+                    <span class="unit">SECS</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Venue Data Blocks -->
+              <div class="venue-info-box">
+                <div class="venue-lead-row">
+                  <div class="venue-pin-icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#FF2B75" stroke-width="2">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                  </div>
+                  <div class="venue-title-wrap">
+                    <h3 class="venue-name">JAIN INSTITUTE OF TECHNOLOGY</h3>
+                    <p class="venue-sub">Davanagere, Karnataka, India</p>
+                  </div>
+                </div>
+
+                <div class="venue-specs-list">
+                  <div class="spec-item">
+                    <span class="spec-label">CO-HOST:</span>
+                    <span class="spec-value">SalutixAI × Jain Institute of Technology (JIT)</span>
+                  </div>
+                  <div class="spec-item">
+                    <span class="spec-label">DATES &amp; TIME:</span>
+                    <span class="spec-value">25 – 26 November 2026 // 24 Hours</span>
+                  </div>
+                  <div class="spec-item">
+                    <span class="spec-label">REGISTRATION:</span>
+                    <span class="spec-value">₹650 per team (Teams of up to 4 members)</span>
+                  </div>
+                  <div class="spec-item">
+                    <span class="spec-label">VENUE:</span>
+                    <span class="spec-value">JIT Library</span>
+                  </div>
+                </div>
+
+                <!-- Interactive Radar Canvas -->
+                <div class="venue-radar-container">
+                  <canvas id="radar-canvas" width="400" height="180"></canvas>
+                  <div class="radar-hud-tag">CAMPUS GRID RADAR // ACTIVE</div>
+                </div>
+
+                <!-- Action Button Link -->
+                <div class="venue-action-box">
+                  <a 
+                    href="https://maps.google.com/?q=Jain+Institute+of+Technology+Davanagere" 
+                    target="_blank" 
+                    rel="noopener"
+                    class="neon-map-btn"
+                    data-sound="click"
+                  >
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+                      <line x1="8" y1="2" x2="8" y2="18"></line>
+                      <line x1="16" y1="6" x2="16" y2="22"></line>
+                    </svg>
+                    <span>OPEN IN GOOGLE MAPS</span>
+                    <span class="btn-arrow-icon">↗</span>
+                  </a>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 4: INNOVATION TRACKS & PROBLEM MATRIX
+         ========================================== -->
+    <section class="cyber-section tracks-section" id="tracks">
+      <div class="section-container">
+        
+        <!-- Section Header -->
+        <div class="section-header-block">
+          <div class="header-pre-badge">
+            <span class="bracket">[</span>
+            <span class="badge-text">INNOVATE • COLLABORATE • BUILD • CREATE IMPACT</span>
+            <span class="bracket">]</span>
+          </div>
+          <h2 class="section-title">INNOVATION TRACKS</h2>
+          <p class="section-subtitle">
+            24 Hours. One Challenge. Build Something That Matters. Turn real-world problems into working prototypes.
+          </p>
+          <div class="header-circuit-line"></div>
+        </div>
+
+        <div class="tracks-grid">
+          
+          <!-- Track 1: Healthcare & AI Innovation (SalutixAI) -->
+          <div class="track-card" data-sound="hover">
+            <div class="track-glow"></div>
+            <div class="track-badge-row">
+              <span class="track-id">TRACK 01</span>
+              <span class="track-tag">SALUTIXAI HEALTH TECH</span>
+            </div>
+            <div class="track-icon">
+              <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#FF2B75" stroke-width="2">
+                <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+                <circle cx="12" cy="5" r="2"></circle>
+                <path d="M12 7v4"></path>
+                <line x1="8" y1="16" x2="8" y2="16"></line>
+                <line x1="16" y1="16" x2="16" y2="16"></line>
+              </svg>
+            </div>
+            <h3 class="track-title">HEALTHCARE &amp; AI INNOVATION</h3>
+            <p class="track-desc">
+              Powered by SalutixAI (Ideas for a healthier tomorrow). Build intelligent AI diagnostics, remote patient monitoring, biomedical telemetry, and preventative healthcare solutions.
+            </p>
+            <div class="track-tech-chips">
+              <span>SalutixAI</span>
+              <span>Computer Vision</span>
+              <span>Predictive AI</span>
+              <span>Health Data</span>
+            </div>
+          </div>
+
+          <!-- Track 2: Smart IoT & Engineering (JIT) -->
+          <div class="track-card" data-sound="hover">
+            <div class="track-glow"></div>
+            <div class="track-badge-row">
+              <span class="track-id">TRACK 02</span>
+              <span class="track-tag">JIT ENGINEERING</span>
+            </div>
+            <div class="track-icon">
+              <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#FF2B75" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <h3 class="track-title">SMART IOT &amp; AUTOMATION</h3>
+            <p class="track-desc">
+              Pioneered by Jain Institute of Technology. Architect embedded hardware, robotics, agricultural sensor grids, campus automation, and smart industrial telemetry.
+            </p>
+            <div class="track-tech-chips">
+              <span>ESP32 / Pi</span>
+              <span>Sensors</span>
+              <span>Robotics</span>
+              <span>Automation</span>
+            </div>
+          </div>
+
+          <!-- Track 3: Sustainable & Civic Impact -->
+          <div class="track-card" data-sound="hover">
+            <div class="track-glow"></div>
+            <div class="track-badge-row">
+              <span class="track-id">TRACK 03</span>
+              <span class="track-tag">IDEAS TO IMPACT</span>
+            </div>
+            <div class="track-icon">
+              <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#FF2B75" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <h3 class="track-title">SUSTAINABLE &amp; CIVIC IMPACT</h3>
+            <p class="track-desc">
+              From Ideas to Impact: Transform local and community challenges into working digital prototypes. Clean energy tracking, civic transparency, and accessibility tools.
+            </p>
+            <div class="track-tech-chips">
+              <span>Civic Tech</span>
+              <span>Clean Energy</span>
+              <span>Accessibility</span>
+              <span>Open Data</span>
+            </div>
+          </div>
+
+          <!-- Track 4: Open Innovation -->
+          <div class="track-card" data-sound="hover">
+            <div class="track-glow"></div>
+            <div class="track-badge-row">
+              <span class="track-id">TRACK 04</span>
+              <span class="track-tag">OPEN SPRINT</span>
+            </div>
+            <div class="track-icon">
+              <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#FF2B75" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </div>
+            <h3 class="track-title">OPEN INNOVATION</h3>
+            <p class="track-desc">
+              24 Hours. One Challenge. Build Something That Matters. Unrestricted sandbox for web apps, fintech innovations, student productivity, and revolutionary concepts.
+            </p>
+            <div class="track-tech-chips">
+              <span>Full Stack</span>
+              <span>Next.js / Vite</span>
+              <span>Mobile Dev</span>
+              <span>Cloud APIs</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 5: PRIZES & BOUNTY VAULT (TOTAL ₹22,000)
+         ========================================== -->
+    <section class="cyber-section prizes-section" id="prizes">
+      <div class="section-container">
+        
+        <!-- Section Header -->
+        <div class="section-header-block">
+          <div class="header-pre-badge">
+            <span class="bracket">[</span>
+            <span class="badge-text">TOTAL PRIZE POOL — ₹22,000</span>
+            <span class="bracket">]</span>
+          </div>
+          <h2 class="section-title">PRIZE POOL &amp; RECOGNITION</h2>
+          <p class="section-subtitle">
+            Total Prize Pool of ₹22,000 awarded across First, Second, and Third prizes with expert mentorship and official recognition.
+          </p>
+          <div class="header-circuit-line"></div>
+        </div>
+
+        <div class="prizes-podium-grid">
+          
+          <!-- 2nd Place: Second Prize (₹7,000) -->
+          <div class="prize-card rank-2" data-sound="hover">
+            <div class="rank-tag">SECOND PRIZE // RANK 02</div>
+            <div class="trophy-symbol silver">2</div>
+            <h3 class="prize-bounty-val">₹7,000</h3>
+            <p class="prize-title">SECOND PRIZE SQUAD</p>
+            <ul class="prize-perks">
+              <li>Direct cash prize reward of ₹7,000</li>
+              <li>Official CLOCKIT 2026 Runner-Up Trophy</li>
+              <li>Verified Certificates of Excellence</li>
+              <li>Mentorship &amp; Industry Collaboration</li>
+            </ul>
+          </div>
+
+          <!-- 1st Place: First Prize (₹10,000) -->
+          <div class="prize-card rank-1 champion-card" data-sound="hover">
+            <div class="champion-glow-border"></div>
+            <div class="rank-tag tag-champion">FIRST PRIZE // RANK 01</div>
+            <div class="trophy-symbol gold">1</div>
+            <h3 class="prize-bounty-val grand-val">₹10,000</h3>
+            <p class="prize-title">CLOCKIT 2026 GRAND CHAMPION</p>
+            <ul class="prize-perks">
+              <li>Direct cash prize payout of ₹10,000</li>
+              <li>CLOCKIT 2026 Champion Trophy</li>
+              <li>Direct Industry &amp; Startup Mentorship</li>
+              <li>Special Citation from SalutixAI × JIT</li>
+            </ul>
+            <div class="champion-badge-ribbon">WINNER</div>
+          </div>
+
+          <!-- 3rd Place: Third Prize (₹5,000) -->
+          <div class="prize-card rank-3" data-sound="hover">
+            <div class="rank-tag">THIRD PRIZE // RANK 03</div>
+            <div class="trophy-symbol bronze">3</div>
+            <h3 class="prize-bounty-val">₹5,000</h3>
+            <p class="prize-title">THIRD PRIZE SQUAD</p>
+            <ul class="prize-perks">
+              <li>Direct cash prize reward of ₹5,000</li>
+              <li>Official CLOCKIT 2026 Podium Trophy</li>
+              <li>Verified Certificates of Excellence</li>
+              <li>Official Participant Swag Pack</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- Four Key Pillars from Reference Poster -->
+        <div class="special-prizes-grid">
+          <div class="special-card">
+            <span class="special-badge">PILLAR 01</span>
+            <h4>EXPERT MENTORSHIP</h4>
+            <p>1-on-1 industry architectural feedback and rapid technical guidance throughout the 24 hours.</p>
+          </div>
+          <div class="special-card">
+            <span class="special-badge">PILLAR 02</span>
+            <h4>24-HOUR BUILDING EXPERIENCE</h4>
+            <p>Non-stop prototype creation: Understand, Ideate, Design, Build, Test, and Present.</p>
+          </div>
+          <div class="special-card">
+            <span class="special-badge">PILLAR 03</span>
+            <h4>NETWORKING &amp; COLLABORATION</h4>
+            <p>Connect with 40–50 passionate squads, academic mentors, and tech pioneers.</p>
+          </div>
+          <div class="special-card">
+            <span class="special-badge">PILLAR 04</span>
+            <h4>CERTIFICATES &amp; RECOGNITION</h4>
+            <p>Official verified credentials for all student innovators representing their institutions.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="cyber-footer">
+      <div class="footer-container">
+        <div class="footer-top-row">
+          <div class="footer-brand">
+            <div class="brand-title">CLOCKIT 2026 // SALUTIXAI × JIT</div>
+            <p>Jain Institute of Technology, Davanagere, Karnataka.</p>
+            <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 4px;">A 24-Hour Innovation &amp; Technology Hackathon. Code Against The Clock.</p>
+          </div>
+          <div class="footer-links-row">
+            <a href="#hero">HOME</a>
+            <a href="#rules">RULES</a>
+            <a href="#tracks">TRACKS</a>
+            <a href="#schedule">TIMELINE</a>
+            <a href="#prizes">PRIZES</a>
+            <a href="#venue">VENUE</a>
+          </div>
+        </div>
+        <div class="footer-bottom-bar">
+          <span>&copy; 2026 SALUTIXAI × JAIN INSTITUTE OF TECHNOLOGY. ALL RIGHTS RESERVED.</span>
+          <span class="sys-code">CLOCKIT 2026 // KERNEL 0x7E // 25 – 26 NOV 2026</span>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- ==========================================
+       MODALS & DIALOGS
+       ========================================== -->
+
+  <!-- 1. REGISTRATION MODAL WITH CYBER TICKET GENERATOR -->
+  <div class="cyber-modal-overlay" id="reg-modal" aria-hidden="true">
+    <div class="cyber-modal-card">
+      <button class="modal-close-btn" id="modal-close" aria-label="Close Modal">&times;</button>
+      
+      <div class="modal-header">
+        <div class="modal-pre-tag">[ OPERATOR ONBOARDING PROTOCOL ]</div>
+        <h3 class="modal-title">SQUAD REGISTRATION (₹650 PER TEAM)</h3>
+        <p class="modal-subtitle">Register your team for CLOCKIT 2026. Teams of up to 4 members. Approximately 40–50 teams capacity.</p>
+      </div>
+
+      <!-- Registration Form -->
+      <form id="reg-form" class="cyber-form">
+        <div class="form-grid">
+          <div class="input-group">
+            <label for="team-name">TEAM / SQUAD CALLSIGN *</label>
+            <input type="text" id="team-name" required placeholder="e.g. CYBER_VANGUARD" autocomplete="off">
+            <span class="input-line"></span>
+          </div>
+
+          <div class="input-group">
+            <label for="lead-name">SQUAD LEADER NAME *</label>
+            <input type="text" id="lead-name" required placeholder="Full Name" autocomplete="off">
+            <span class="input-line"></span>
+          </div>
+
+          <div class="input-group">
+            <label for="lead-email">OPERATOR EMAIL *</label>
+            <input type="email" id="lead-email" required placeholder="leader@college.edu" autocomplete="off">
+            <span class="input-line"></span>
+          </div>
+
+          <div class="input-group">
+            <label for="lead-phone">COMMUNICATION NUMBER *</label>
+            <input type="tel" id="lead-phone" required placeholder="+91 98765 43210" autocomplete="off">
+            <span class="input-line"></span>
+          </div>
+
+          <div class="input-group">
+            <label for="college-name">INSTITUTION / COLLEGE *</label>
+            <input type="text" id="college-name" required placeholder="College / University Name" autocomplete="off">
+            <span class="input-line"></span>
+          </div>
+
+          <div class="input-group">
+            <label for="track-select">TARGET INNOVATION TRACK *</label>
+            <select id="track-select" required>
+              <option value="" disabled selected>Select a Track...</option>
+              <option value="Healthcare & AI Innovation">Track 01: Healthcare & AI Innovation (SalutixAI)</option>
+              <option value="Smart IoT & Automation">Track 02: Smart IoT & Automation (JIT)</option>
+              <option value="Sustainable & Civic Impact">Track 03: Sustainable & Civic Impact</option>
+              <option value="Open Innovation">Track 04: Open Innovation (Build Something That Matters)</option>
+            </select>
+            <span class="input-line"></span>
+          </div>
+        </div>
+
+        <div class="form-checkbox-row">
+          <label class="custom-checkbox">
+            <input type="checkbox" required id="rules-agree">
+            <span class="checkmark"></span>
+            <span class="check-text">I confirm team fee ₹650 is understood, team has up to 4 members, and we adhere to 100% original code rules.</span>
+          </label>
+        </div>
+
+        <div class="form-submit-row">
+          <button type="submit" class="neon-pill-btn submit-btn" data-sound="click">
+            <span class="btn-text">INITIALIZE REGISTRATION (₹650)</span>
+            <span class="btn-arrow">⚡</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Holographic Ticket Output View (Appears on Success) -->
+      <div id="ticket-success-view" class="ticket-view hidden">
+        <div class="ticket-congrats">
+          <div class="success-icon">✓</div>
+          <h4>OPERATOR CLEARANCE GRANTED</h4>
+          <p>Your squad pass has been minted for CLOCKIT 2026. See you at JIT Davanagere on 25 – 26 Nov 2026!</p>
+        </div>
+
+        <div class="hologram-ticket">
+          <div class="ticket-top">
+            <span class="ticket-event">CLOCKIT 2026 // PASS</span>
+            <span class="ticket-status">CONFIRMED</span>
+          </div>
+          <div class="ticket-mid">
+            <div class="ticket-field">
+              <span class="tf-label">TEAM:</span>
+              <span class="tf-val" id="ticket-team-name">CYBER_PHANTOM</span>
+            </div>
+            <div class="ticket-field">
+              <span class="tf-label">LEADER:</span>
+              <span class="tf-val" id="ticket-lead-name">ARJUN SHARMA</span>
+            </div>
+            <div class="ticket-field">
+              <span class="tf-label">TRACK:</span>
+              <span class="tf-val" id="ticket-track">HEALTHCARE &amp; AI INNOVATION</span>
+            </div>
+          </div>
+          <div class="ticket-bottom">
+            <div class="barcode-strip">
+              <span class="barcode-line"></span>
+              <span class="barcode-line"></span>
+              <span class="barcode-line w-thick"></span>
+              <span class="barcode-line"></span>
+              <span class="barcode-line w-thick"></span>
+              <span class="barcode-line"></span>
+              <span class="barcode-line"></span>
+              <span class="barcode-line w-thick"></span>
+            </div>
+            <span class="ticket-serial">PASS_ID: #CLK-2026-JIT</span>
+          </div>
+        </div>
+
+        <div class="ticket-actions">
+          <button class="tech-cutout-btn" id="ticket-done-btn">
+            <span class="btn-cut-border"></span>
+            <span class="btn-cut-label">CLOSE PROTOCOL</span>
+            <span class="btn-hashes">///</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 2. EVENT TEASER CINEMATIC VIDEO MODAL -->
+  <div class="cyber-modal-overlay" id="trailer-modal" aria-hidden="true">
+    <div class="cyber-modal-card video-card">
+      <button class="modal-close-btn" id="trailer-close-btn" aria-label="Close Video">&times;</button>
+      
+      <div class="video-hud-header">
+        <span class="hud-pill">SIGNAL: LIVE FEED</span>
+        <span class="hud-stream-title">CLOCKIT_2026_OFFICIAL_TEASER.MP4</span>
+      </div>
+
+      <div class="cinematic-screen-frame">
+        <!-- Interactive Visual Teaser Display -->
+        <div class="teaser-visual-player">
+          <div class="scan-grid-overlay"></div>
+          <div class="teaser-glitch-center">
+            <div class="glitch-large-title">CLOCKIT 2026</div>
+            <p class="teaser-quote">"CODE AGAINST THE CLOCK. BUILD SOMETHING THAT MATTERS."</p>
+            <div class="teaser-stats-counter">
+              <div class="tstat">
+                <span class="tnum">24</span>
+                <span class="tlbl">HOURS</span>
+              </div>
+              <div class="tsep">×</div>
+              <div class="tstat">
+                <span class="tnum">₹22K</span>
+                <span class="tlbl">PRIZE POOL</span>
+              </div>
+              <div class="tsep">×</div>
+              <div class="tstat">
+                <span class="tnum">40–50</span>
+                <span class="tlbl">SQUADS</span>
+              </div>
+            </div>
+            <div class="teaser-play-pulse">
+              <span class="pulse-ring"></span>
+              <span class="pulse-core">NOV 25–26 @ JIT DAVANAGERE</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-footer-bar">
+        <span>VENUE: JAIN INSTITUTE OF TECHNOLOGY, DAVANAGERE</span>
+        <button class="neon-pill-btn" id="teaser-reg-btn">REGISTER (₹650) →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. COMMAND PALETTE / QUICK SEARCH MODAL (Ctrl + K) -->
+  <div class="cyber-modal-overlay" id="search-modal" aria-hidden="true">
+    <div class="cyber-modal-card search-card">
+      <div class="search-input-header">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#FF2B75" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="command-search-input" placeholder="Type a destination or command... (e.g. 'rules', 'prize', 'map', 'track')" autocomplete="off">
+        <span class="esc-badge">ESC</span>
+      </div>
+      <div class="search-results-list" id="search-results">
+        <a href="#hero" class="search-item active">
+          <span class="item-title">Home Hero Viewport</span>
+          <span class="item-desc">CLOCKIT 2026: Code Against The Clock</span>
+        </a>
+        <a href="#rules" class="search-item">
+          <span class="item-title">Rules &amp; Eligibility</span>
+          <span class="item-desc">₹650/team, up to 4 members, 40–50 squads</span>
+        </a>
+        <a href="#tracks" class="search-item">
+          <span class="item-title">Innovation Tracks</span>
+          <span class="item-desc">Healthcare AI, Smart IoT, Ideas to Impact &amp; Open Innovation</span>
+        </a>
+        <a href="#schedule" class="search-item">
+          <span class="item-title">The Hackathon Journey</span>
+          <span class="item-desc">Understand, Ideate, Design, Build, Test, Present</span>
+        </a>
+        <a href="#prizes" class="search-item">
+          <span class="item-title">Prize Pool &amp; Rewards</span>
+          <span class="item-desc">₹22,000 pool: 1st ₹10K, 2nd ₹7K, 3rd ₹5K</span>
+        </a>
+        <a href="#venue" class="search-item">
+          <span class="item-title">Venue &amp; Maps</span>
+          <span class="item-desc">JIT Davanagere campus location and directions</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main JavaScript Module Entrypoint -->
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
